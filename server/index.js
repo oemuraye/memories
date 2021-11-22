@@ -6,15 +6,16 @@ import cors from 'cors'
 import postRoutes from './routes/posts.js'
 
 const app = express()
-const port = process.env.PORT || 5000
+const port = process.env.PORT
 
-app.use('/posts', postRoutes)
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }))
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true}))
 app.use(cors())
 
-const connectionURL = 'mongodb+srv://memories-app:memories-app@cluster0.vrkfl.mongodb.net/test'
+app.use('/posts', postRoutes)
+
+const connectionURL = process.env.MONGODB_URL
 
 mongoose.connect(connectionURL)
 .then(() => app.listen(port, () => console.log('Server is up on port ' + port)))
